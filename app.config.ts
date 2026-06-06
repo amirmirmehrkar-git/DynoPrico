@@ -10,13 +10,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...config,
-    name: 'FreshShift',
-    slug: 'freshshift',
+    name: 'DynoPrice',
+    slug: 'dynoprice',
     newArchEnabled: true,
     version: process.env.BILT_APP_VERSION ?? '1.0.0',
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
-    scheme: 'freshshift',
+    scheme: 'dynoprice',
     runtimeVersion: {
       policy: 'appVersion',
     },
@@ -26,10 +26,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ITSAppUsesNonExemptEncryption: false,
       },
       supportsTablet: true,
-      bundleIdentifier: process.env.BILT_IOS_BUNDLE_ID ?? 'me.bilt.freshshift',
+      bundleIdentifier: process.env.BILT_IOS_BUNDLE_ID ?? 'me.bilt.dynoprice',
     },
     android: {
-      package: process.env.BILT_ANDROID_PACKAGE ?? 'me.bilt.freshshift',
+      package: process.env.BILT_ANDROID_PACKAGE ?? 'me.bilt.dynoprice',
     },
     extra: {
       appStoreAppId: process.env.BILT_APP_STORE_APP_ID,

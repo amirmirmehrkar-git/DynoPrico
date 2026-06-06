@@ -184,7 +184,7 @@ const initialRecommendation: Recommendation = {
 };
 
 export const useStore = create<StoreState>((set) => ({
-  storeName: 'Hamburg Bakery #17',
+  storeName: 'Nur Hier',
   storeLocation: 'Sternschanze, Hamburg',
   weather: 'Rainy, 14°C',
   traffic: 'Low foot traffic',
