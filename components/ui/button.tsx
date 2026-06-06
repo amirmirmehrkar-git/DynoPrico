@@ -106,7 +106,7 @@ export const Button = React.forwardRef<React.ComponentRef<typeof AnimatedPressab
           >
             <ActivityIndicator
               size="small"
-              color={isDefault ? 'hsl(0, 0%, 98%)' : 'hsl(240, 5.9%, 10%)'}
+              color={isDefault ? 'hsl(30, 33%, 98%)' : 'hsl(24, 80%, 48%)'}
             />
           </Animated.View>
         )}
@@ -124,7 +124,7 @@ export const Button = React.forwardRef<React.ComponentRef<typeof AnimatedPressab
           {...props}
         >
           <LinearGradient
-            colors={['hsl(240, 5.9%, 12%)', 'hsl(240, 5.9%, 10%)']}
+            colors={['hsl(24, 82%, 52%)', 'hsl(24, 80%, 46%)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{
