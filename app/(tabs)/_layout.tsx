@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Home, Bell } from 'lucide-react-native';
+import { Home, Bell, SlidersHorizontal } from 'lucide-react-native';
 
 import { useStore } from '@/lib/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -37,6 +37,15 @@ export default function TabLayout() {
           tabBarBadge: unread > 0 ? unread : undefined,
           tabBarBadgeStyle: { backgroundColor: theme.notification, fontSize: 10 },
           tabBarIcon: ({ color, size }) => <Bell color={color} size={size ?? 22} />,
+        }}
+      />
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: 'Engine',
+          tabBarIcon: ({ color, size }) => (
+            <SlidersHorizontal color={color} size={size ?? 22} />
+          ),
         }}
       />
     </Tabs>
