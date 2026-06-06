@@ -17,6 +17,8 @@ import {
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { AnimatedPressable } from '@/components/ui/primitives/animated-pressable';
+import { ActionCard } from '@/components/ActionCard';
+import { ChannelStrategyList } from '@/components/ChannelStrategyList';
 import { useStore, type AIReason } from '@/lib/store';
 
 const iconMap: Record<AIReason['icon'], LucideIcon> = {
@@ -29,8 +31,12 @@ const iconMap: Record<AIReason['icon'], LucideIcon> = {
 export default function RecommendationDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { recommendations, approve, reject } = useStore();
+  const recommendations = useStore((s) => s.recommendations);
+  const approve = useStore((s) => s.approve);
+  const reject = useStore((s) => s.reject);
+  const setActionStatus = useStore((s) => s.setActionStatus);
   const rec = recommendations.find((r) => r.id === id) ?? recommendations[0];
+  const acceptedCount = rec.actions.filter((a) => a.status === 'accepted').length;
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
@@ -52,7 +58,7 @@ export default function RecommendationDetailScreen() {
           {rec.product}
         </Text>
         <Text variant="muted" className="mt-1">
-          {rec.action} · {rec.campaignStart}–{rec.campaignEnd}
+          {rec.wasteRisk}% waste risk · {rec.inventoryRemaining} units · {rec.campaignStart}–{rec.campaignEnd}
         </Text>
 
         {/* Confidence */}
@@ -70,10 +76,7 @@ export default function RecommendationDetailScreen() {
             {rec.confidence}%
           </Text>
           <View className="mt-3 h-2.5 overflow-hidden rounded-full bg-primary/20">
-            <View
-              className="h-full rounded-full bg-primary"
-              style={{ width: `${rec.confidence}%` }}
-            />
+            <View className="h-full rounded-full bg-primary" style={{ width: `${rec.confidence}%` }} />
           </View>
           <Text size="xs" variant="muted" className="mt-2">
             Based on weather, inventory, sales patterns, and local events.
@@ -103,6 +106,31 @@ export default function RecommendationDetailScreen() {
             );
           })}
         </View>
+
+        {/* Channel strategy */}
+        <Text size="lg" weight="semibold" className="mt-6">
+          Channel Strategy
+        </Text>
+        <Text size="sm" variant="muted" className="mb-3 mt-0.5">
+          Different channels need different pricing because of the rain.
+        </Text>
+        <ChannelStrategyList strategy={rec.channelStrategy} />
+
+        {/* Recommended actions */}
+        <Text size="lg" weight="semibold" className="mt-6">
+          Recommended Actions
+        </Text>
+        <View className="mt-3 gap-3">
+          {rec.actions.map((action, i) => (
+            <ActionCard
+              key={action.id}
+              index={i}
+              action={action}
+              onAccept={() => setActionStatus(rec.id, action.id, 'accepted')}
+              onReject={() => setActionStatus(rec.id, action.id, 'rejected')}
+            />
+          ))}
+        </View>
       </ScrollView>
 
       {rec.status === 'pending' ? (
@@ -117,11 +145,12 @@ export default function RecommendationDetailScreen() {
           >
             <View className="flex-row items-center gap-2">
               <X color="hsl(24 30% 12%)" size={18} />
-              <Text weight="semibold">Reject</Text>
+              <Text weight="semibold">Reject All</Text>
             </View>
           </Button>
           <Button
             className="h-14 flex-1"
+            disabled={acceptedCount === 0}
             onPress={() => {
               approve(rec.id);
               router.replace(`/result/${rec.id}`);
@@ -130,7 +159,7 @@ export default function RecommendationDetailScreen() {
             <View className="flex-row items-center gap-2">
               <Check color="hsl(30 33% 98%)" size={18} />
               <Text weight="bold" className="text-primary-foreground">
-                Approve
+                Approve{acceptedCount > 0 ? ` (${acceptedCount})` : ''}
               </Text>
             </View>
           </Button>
