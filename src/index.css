@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #0d1724;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-dot {
+  animation: timeline-move 6s ease-in-out infinite alternate;
+}
+
+.flow-step {
+  animation: flow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes timeline-move {
+  from { left: 4%; }
+  to { left: calc(100% - 1.5rem); }
+}
+
+@keyframes flow-pulse {
+  50% { border-color: rgba(32, 178, 107, 0.42); transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .timeline-dot, .flow-step { animation: none; }
+}
+
+::selection {
+  background: #20b26b;
+  color: #ffffff;
+}
+
+button,
+select,
+input,
+textarea {
+  font: inherit;
+}
