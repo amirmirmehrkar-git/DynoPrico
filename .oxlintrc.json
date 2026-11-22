@@ -6,13 +6,27 @@
     "es2024": true,
     "react-native": true
   },
-  "plugins": ["react", "typescript", "import", "unicorn"],
+  "plugins": [
+    "react",
+    "typescript",
+    "import",
+    "unicorn"
+  ],
   "jsPlugins": [
-    { "name": "custom", "specifier": "./eslint-rules/require-asset-exists.js" },
-    { "name": "store", "specifier": "./eslint-rules/no-unstable-zustand-selector.js" },
+    {
+      "name": "custom",
+      "specifier": "./eslint-rules/require-asset-exists.js"
+    },
+    {
+      "name": "store",
+      "specifier": "./eslint-rules/no-unstable-zustand-selector.js"
+    },
     "eslint-plugin-expo",
     "eslint-plugin-react-native",
-    "eslint-plugin-react-compiler"
+    {
+      "name": "react-hooks-js",
+      "specifier": "eslint-plugin-react-hooks"
+    }
   ],
   "categories": {
     "correctness": "error",
@@ -23,7 +37,9 @@
     "typeCheck": true
   },
   "settings": {
-    "react": { "version": "19.1.0" }
+    "react": {
+      "version": "19.1.0"
+    }
   },
   "rules": {
     "custom/require-asset-exists": "error",
@@ -41,7 +57,6 @@
     "react/no-array-index-key": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
-    "react-compiler/react-compiler": "error",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -50,16 +65,44 @@
         "caughtErrorsIgnorePattern": "^_",
         "ignoreRestSiblings": true
       }
-    ]
+    ],
+    "react-hooks-js/static-components": "error",
+    "react-hooks-js/use-memo": "error",
+    "react-hooks-js/void-use-memo": "error",
+    "react-hooks-js/preserve-manual-memoization": "error",
+    "react-hooks-js/incompatible-library": "error",
+    "react-hooks-js/immutability": "error",
+    "react-hooks-js/globals": "error",
+    "react-hooks-js/refs": "error",
+    "react-hooks-js/set-state-in-effect": "error",
+    "react-hooks-js/error-boundaries": "error",
+    "react-hooks-js/purity": "error",
+    "react-hooks-js/set-state-in-render": "error",
+    "react-hooks-js/unsupported-syntax": "error",
+    "react-hooks-js/config": "error",
+    "react-hooks-js/gating": "error"
   },
-  "ignorePatterns": ["dist", "context", ".expo", "node_modules", "android/app/build"],
+  "ignorePatterns": [
+    "dist",
+    "context",
+    ".expo",
+    "node_modules",
+    "android/app/build"
+  ],
   "overrides": [
     {
-      "files": ["metro.config.cjs", "*.config.js"],
-      "env": { "node": true }
+      "files": [
+        "metro.config.cjs",
+        "*.config.js"
+      ],
+      "env": {
+        "node": true
+      }
     },
     {
-      "files": ["**/*.d.ts"],
+      "files": [
+        "**/*.d.ts"
+      ],
       "rules": {}
     }
   ]

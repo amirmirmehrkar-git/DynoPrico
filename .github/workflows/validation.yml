@@ -1,0 +1,58 @@
+name: Expo validation
+on:
+  push:
+    branches: [main, fix/expo-maintenance-2026-11-22, fix/expo54-security-checkpoint-2026-11-22]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: expo-validation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    name: Expo compatibility and bundles
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CI: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install declared npm version
+        run: npm install --global npm@10.9.0
+      - run: npm ci
+      - run: npm run expo-check
+      - run: npm run doctor
+      - run: npm run lint
+      - run: npm run typecheck
+      - name: Validate native plugin configuration
+        run: npx expo config --type prebuild --json > /tmp/native-config.json
+        env:
+          EXPO_PLATFORM: native
+      - name: Export web application
+        run: npm run build -- --max-workers 2
+      - name: Bundle iOS and Android JavaScript without releasing an app
+        run: npx expo export --platform ios --platform android --output-dir dist-native --max-workers 2
+        env:
+          EXPO_PLATFORM: native
+  audit:
+    name: Dependency security audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm install --global npm@10.9.0
+      - run: npm ci
+      - run: npm audit --audit-level=high

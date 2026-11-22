@@ -13,9 +13,16 @@ import { useStore, type PublishStatus } from '@/lib/store';
 import { cn } from '@/lib/utils';
 
 const statusMeta: Record<
-  Exclude<PublishStatus, 'pending'>,
+  PublishStatus,
   { label: string; bg: string; text: string; Icon: typeof CircleCheck; iconColor: string }
 > = {
+  pending: {
+    label: 'Pending',
+    bg: 'bg-secondary',
+    text: 'text-muted-foreground',
+    Icon: Clock3,
+    iconColor: 'hsl(24 10% 42%)',
+  },
   published: {
     label: 'Published',
     bg: 'bg-accent/15',
@@ -120,7 +127,7 @@ export default function ResultScreen() {
         <View className="mt-3 gap-3">
           {publishChannels.map((channel, i) => {
             const resolved = i < resolvedCount;
-            const meta = statusMeta[channel.status as Exclude<PublishStatus, 'pending'>];
+            const meta = statusMeta[channel.status];
             const StatusIcon = meta.Icon;
             return (
               <Animated.View

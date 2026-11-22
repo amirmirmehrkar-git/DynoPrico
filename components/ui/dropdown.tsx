@@ -68,7 +68,7 @@ export function DropdownTrigger({
   children,
 }: DropdownTriggerProps) {
   const { open, onOpenChange, value, setTriggerLayout } = useContext(DropdownContext);
-  const triggerRef = useRef<View>(null);
+  const triggerRef = useRef<React.ComponentRef<typeof View>>(null);
 
   const handlePress = useCallback(() => {
     triggerRef.current?.measureInWindow((x, y, width, height) => {
