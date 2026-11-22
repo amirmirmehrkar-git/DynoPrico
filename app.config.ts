@@ -5,7 +5,9 @@ type ExpoPlugins = NonNullable<ExpoConfig['plugins']>;
 export default ({ config }: ConfigContext): ExpoConfig => {
   const nativePlugins: ExpoPlugins =
     process.env.EXPO_PLATFORM === 'native'
-      ? [['expo-dev-client', { launchMode: 'most-recent' }], 'react-native-maps']
+      // SDK 54 applies its built-in react-native-maps prebuild plugin automatically.
+      // The SDK-compatible maps package does not export a standalone config plugin.
+      ? [['expo-dev-client', { launchMode: 'most-recent' }]]
       : [];
 
   return {

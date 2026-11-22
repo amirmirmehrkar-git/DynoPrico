@@ -1,4 +1,45 @@
-# Welcome to your Bilt project
+# DynoPrice
+
+DynoPrice is an Expo / React Native pricing-workflow prototype originally created with Bilt.
+The `main` branch contains this application. The separate `landing-page` and
+`dynoprice-decision-engine-mvp` branches have their own history and deployment context.
+
+## Reproducible development and validation
+
+Use Node.js 22 and the declared npm 10.9.0 with the committed lockfile:
+
+```sh
+npm install --global npm@10.9.0
+npm ci
+npm run expo-check
+npm run doctor
+npm run lint
+npm run typecheck
+npm run build
+```
+
+`npm run build` exports the web application to `dist/`. Native JavaScript can be checked
+without signing or releasing an app:
+
+```sh
+EXPO_PLATFORM=native npx expo config --type prebuild
+EXPO_PLATFORM=native npx expo export --platform ios --platform android --output-dir dist-native --max-workers 2
+```
+
+CI repeats these checks and runs a separate `npm audit --audit-level=high` gate.
+The repository does not yet contain automated unit or device tests. JavaScript bundle success
+does not establish native binary/device behavior.
+
+Expo, React Native, React and native modules must be upgraded as a compatible SDK set.
+Use `npx expo install --fix` after an intentional SDK change, then rerun Doctor and all checks.
+Dependabot groups SDK patches and leaves major/minor SDK migrations for coordinated review.
+Use a development build or an Expo Go version matching the project's SDK for native previews.
+
+Read [SECURITY.md](SECURITY.md) for the registry credential incident. Current source changes
+cannot revoke historical credentials. CI does not require a private registry credential for
+the current public dependency set, and this workflow contains no deployment or release step.
+
+## Bilt project context
 
 [![Built with Bilt](https://img.shields.io/endpoint?url=https%3A%2F%2Fapp.bilt.me%2Fapi%2Fbadge)](https://bilt.me)
 
@@ -34,14 +75,14 @@ git clone <YOUR_GIT_URL>
 # Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm install
+# Step 3: Install the committed dependency versions.
+npm ci
 
 # Step 4: Start the Expo development server.
 npx expo start
 ```
 
-Scan the QR code with Expo Go on your phone to see your app running locally.
+Use a development build or an Expo Go version that matches the installed SDK to preview on your phone.
 
 **Edit a file directly in GitHub**
 
@@ -80,7 +121,7 @@ Scan the QR code with Expo Go ([iOS](https://apps.apple.com/app/expo-go/id982107
 **Option 2: Run Locally**
 
 ```sh
-npm install
+npm ci
 npx expo start
 ```
 
