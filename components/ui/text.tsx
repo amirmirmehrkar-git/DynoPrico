@@ -38,7 +38,7 @@ export interface TextProps extends RNTextProps, VariantProps<typeof textVariants
   className?: string;
 }
 
-export const Text = React.forwardRef<RNText, TextProps>(
+export const Text = React.forwardRef<React.ComponentRef<typeof RNText>, TextProps>(
   ({ variant, size, weight, className, ...props }, ref) => (
     <RNText
       ref={ref}

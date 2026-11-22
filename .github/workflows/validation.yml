@@ -36,7 +36,7 @@ jobs:
         env:
           EXPO_PLATFORM: native
       - name: Export web application
-        run: npm run build
+        run: npm run build -- --max-workers 2
       - name: Bundle iOS and Android JavaScript without releasing an app
         run: npx expo export --platform ios --platform android --output-dir dist-native --max-workers 2
         env:

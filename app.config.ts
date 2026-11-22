@@ -1,12 +1,10 @@
-import type { ConfigContext, ExpoConfig } from '@expo/config';
+import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 type ExpoPlugins = NonNullable<ExpoConfig['plugins']>;
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   const nativePlugins: ExpoPlugins =
     process.env.EXPO_PLATFORM === 'native'
-      // SDK 54 applies its built-in react-native-maps prebuild plugin automatically.
-      // The SDK-compatible maps package does not export a standalone config plugin.
       ? [['expo-dev-client', { launchMode: 'most-recent' }]]
       : [];
 
@@ -14,15 +12,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...config,
     name: 'DynoPrice',
     slug: 'dynoprice',
-    newArchEnabled: true,
     version: process.env.BILT_APP_VERSION ?? '1.0.0',
     orientation: 'portrait',
     userInterfaceStyle: 'automatic',
     scheme: 'dynoprice',
+    web: { bundler: 'metro', output: 'single' },
     runtimeVersion: {
       policy: 'appVersion',
     },
-    assetBundlePatterns: ['**/*'],
     ios: {
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
@@ -36,7 +33,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     extra: {
       appStoreAppId: process.env.BILT_APP_STORE_APP_ID,
     },
-    plugins: ['expo-router', 'expo-font', ...nativePlugins],
+    plugins: [
+      'expo-router',
+      'expo-font',
+      'expo-splash-screen',
+      'expo-status-bar',
+      ...nativePlugins,
+    ],
     experiments: {
       typedRoutes: true,
     }

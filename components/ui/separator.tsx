@@ -8,7 +8,7 @@ export interface SeparatorProps extends ViewProps {
   className?: string;
 }
 
-export const Separator = React.forwardRef<View, SeparatorProps>(
+export const Separator = React.forwardRef<React.ComponentRef<typeof View>, SeparatorProps>(
   ({ orientation = 'horizontal', className, ...props }, ref) => (
     <View
       ref={ref}

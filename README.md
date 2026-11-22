@@ -35,9 +35,28 @@ Use `npx expo install --fix` after an intentional SDK change, then rerun Doctor 
 Dependabot groups SDK patches and leaves major/minor SDK migrations for coordinated review.
 Use a development build or an Expo Go version matching the project's SDK for native previews.
 
+The current compatible set is Expo SDK 58, React Native 0.88.1, React 19.3.0 and
+TypeScript 6.0.3. Web export explicitly remains a single-page application in `dist/`.
+NativeWind stays on stable v4 with Tailwind CSS v3. Before a native release, rebuild the
+development client and check maps, animations, navigation and device layout on iOS and Android:
+
+```sh
+EXPO_PLATFORM=native npm run android
+EXPO_PLATFORM=native npm run ios
+```
+
+The SDK 54 compatibility checkpoint is preserved on
+[`fix/expo54-security-checkpoint-2026-11-22`](https://github.com/amirmirmehrkar-git/DynoPrico/tree/fix/expo54-security-checkpoint-2026-11-22).
+Its Expo validation passes, but its high-severity audit gate remains red. SDK 58 removes
+the vulnerable old Router/Metro dependency chains without forcing incompatible transitive
+package versions. See [dependency security status](SECURITY.md#dependency-security-status)
+for the remaining upstream advisory.
+
 Read [SECURITY.md](SECURITY.md) for the registry credential incident. Current source changes
 cannot revoke historical credentials. CI does not require a private registry credential for
 the current public dependency set, and this workflow contains no deployment or release step.
+The connected Vercel integration can create a Preview when a feature branch is pushed;
+that preview is separate from the `landing-page` production branch.
 
 ## Bilt project context
 
